@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Портфоліо Розробника</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Общий анимированный фон -->
+    <div class="page__background">
+        <div class="page__gradient" id="gradient"></div>
+        <div class="page__lights">
+            <div class="page__light page__light-1"></div>
+            <div class="page__light page__light-2"></div>
+            <div class="page__light page__light-3"></div>
+        </div>
+    </div>
+
+    <div class="hero">
+        <div class="hero__content">
+            <h1 class="hero__title">Віталій СТОЙКОВ</h1>
+            
+            <p class="hero__subtitle">Мій шлях в IT + AI</p>
+            
+            <p class="hero__bio">
+                Розробник, що спеціалізується на веб-технологіях та штучному інтелекті. 
+                Створюю інноваційні рішення, які поєднують креативність та технологію.
+            </p>
+
+            <button class="hero__button" id="scrollToSkills">Мої навички</button>
+        </div>
+    </div>
+
+    <!-- Секція Навичок -->
+    <section class="skills">
+
+        <div class="skills__container">
+            <h2 class="skills__title">Мої навички</h2>
+            
+            <div class="skills__actions">
+                <button class="skills__add-btn" id="addSkillBtn">+ Додати навичку</button>
+            </div>
+
+            <div class="skills__grid" id="skillsGrid">
+                <!-- Карточки навыков будут добавлены через JS -->
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>
