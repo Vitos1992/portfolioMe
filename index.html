@@ -3,10 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Портфоліо Розробника</title>
+    <title data-uk="Портфоліо Розробника" data-en="Developer Portfolio">Портфоліо Розробника</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header__container">
+            <div class="header__logo">
+                <div class="header__logo-text">VS</div>
+            </div>
+            
+            <nav class="header__nav">
+                <ul class="header__menu">
+                    <li class="header__menu-item">
+                        <a href="#about" class="header__menu-link" data-uk="Про мене" data-en="About me">Про мене</a>
+                    </li>
+                    <li class="header__menu-item">
+                        <a href="#skills" class="header__menu-link" data-uk="Мої навички" data-en="My skills">Мої навички</a>
+                    </li>
+                    <li class="header__menu-item">
+                        <a href="#projects" class="header__menu-link" data-uk="Проекти" data-en="Projects">Проекти</a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <button class="header__lang-btn" id="langToggle">
+                <span class="header__lang-text" data-uk="EN" data-en="UA">EN</span>
+            </button>
+        </div>
+    </header>
     <!-- Общий анимированный фон -->
     <div class="page__background">
         <div class="page__gradient" id="gradient"></div>
@@ -21,30 +47,60 @@
         <div class="hero__content">
             <h1 class="hero__title">Віталій СТОЙКОВ</h1>
             
-            <p class="hero__subtitle">Мій шлях в IT + AI</p>
+            <p class="hero__subtitle" data-uk="Мій шлях в IT + AI" data-en="My journey in IT + AI">Мій шлях в IT + AI</p>
             
-            <p class="hero__bio">
+            <p class="hero__bio" data-uk="Розробник, що спеціалізується на веб-технологіях та штучному інтелекті. Створюю інноваційні рішення, які поєднують креативність та технологію." data-en="Developer specializing in web technologies and artificial intelligence. Creating innovative solutions that combine creativity and technology.">
                 Розробник, що спеціалізується на веб-технологіях та штучному інтелекті. 
                 Створюю інноваційні рішення, які поєднують креативність та технологію.
             </p>
 
-            <button class="hero__button" id="scrollToSkills">Мої навички</button>
+            <button class="hero__button" id="scrollToSkills" data-uk="Мої навички" data-en="My skills">Мої навички</button>
         </div>
     </div>
 
+    <!-- Секція Про Мене -->
+    <section class="about" id="about">
+        <div class="about__container">
+            <h2 class="about__title" data-uk="Про мене" data-en="About me">Про мене</h2>
+            
+            <div class="about__wrapper">
+                <img src="./img/hero.jpeg" alt="Фото" class="about__image" data-uk-alt="Фото Віталія Стойкова" data-en-alt="Photo of Vitaly Stoykov">
+                <div class="about__text">
+                    <p class="about__description" data-uk="Привіт! Я Віталій СТОЙКОВ - веб-розробник з пристрастю до створення інноваційних цифрових рішень. Мій шлях в IT розпочався з простої допитливості, а сьогодні я спеціалізуюся на розробці сучасних веб-додатків, які поєднують estetику та функціональність." data-en="Hi! I'm Vitaly STOYKOV - a web developer passionate about creating innovative digital solutions. My journey in IT started with simple curiosity, and today I specialize in developing modern web applications that combine aesthetics and functionality.">
+                        Привіт! Я Віталій СТОЙКОВ - веб-розробник з пристрастю до створення інноваційних цифрових рішень. 
+                        Мій шлях в IT розпочався з простої допитливості, а сьогодні я спеціалізуюся на розробці 
+                        сучасних веб-додатків, які поєднують estetику та функціональність.
+                    </p>
+                    <p class="about__description" data-uk="Я вірю у силу технології та штучного інтелекту для вирішення реальних проблем. Щодня я вдосконалюю свої навички, вчуся новим технологіям та ділюся знаннями з спільнотою." data-en="I believe in the power of technology and artificial intelligence to solve real problems. Every day I improve my skills, learn new technologies and share knowledge with the community.">
+                        Я вірю у силу технології та штучного інтелекту для вирішення реальних проблем. 
+                        Щодня я вдосконалюю свої навички, вчуся новим технологіям та ділюся знаннями з спільнотою.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Секція Навичок -->
-    <section class="skills">
+    <section class="skills" id="skills">
 
         <div class="skills__container">
-            <h2 class="skills__title">Мої навички</h2>
+            <h2 class="skills__title" data-uk="Мої навички" data-en="My skills">Мої навички</h2>
             
             <div class="skills__actions">
-                <button class="skills__add-btn" id="addSkillBtn">+ Додати навичку</button>
+                <button class="skills__add-btn" id="addSkillBtn" data-uk="+ Додати навичку" data-en="+ Add skill">+ Додати навичку</button>
             </div>
 
             <div class="skills__grid" id="skillsGrid">
                 <!-- Карточки навыков будут добавлены через JS -->
             </div>
+        </div>
+    </section>
+
+    <!-- Секція Проектів -->
+    <section class="projects" id="projects">
+        <div class="projects__container">
+            <h2 class="projects__title" data-uk="Мої проекти" data-en="My Projects">Мої проекти</h2>
+            <p class="projects__placeholder" data-uk="Проекти буде додано скоро..." data-en="Projects will be added soon...">Проекти буде додано скоро...</p>
         </div>
     </section>
 

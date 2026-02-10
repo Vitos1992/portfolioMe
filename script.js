@@ -188,16 +188,28 @@ class SkillsManager {
     }
 
     addSkill() {
-        const title = prompt('Введіть назву навички:');
+        const lang = localStorage.getItem('currentLanguage') || 'uk';
+        
+        const titlePrompt = lang === 'uk' 
+            ? 'Введіть назву навички:' 
+            : 'Enter skill name:';
+        const descriptionPrompt = lang === 'uk' 
+            ? 'Введіть коротко опис навички:' 
+            : 'Enter skill description:';
+        const noDescriptionMsg = lang === 'uk' 
+            ? 'Опис невказано' 
+            : 'No description provided';
+
+        const title = prompt(titlePrompt);
         if (!title || title.trim() === '') return;
 
-        const description = prompt('Введіть коротко опис навички:');
+        const description = prompt(descriptionPrompt);
         if (description === null) return;
 
         const newSkill = {
             id: Date.now(),
             title: title.trim(),
-            description: description.trim() || 'Опис невказано'
+            description: description.trim() || noDescriptionMsg
         };
 
         this.skills.push(newSkill);
@@ -222,6 +234,8 @@ class SkillsManager {
 
     render() {
         this.skillsGrid.innerHTML = '';
+        const lang = localStorage.getItem('currentLanguage') || 'uk';
+        const deleteButtonText = lang === 'uk' ? 'Видалити навичку' : 'Delete skill';
         
         this.skills.forEach(skill => {
             const card = document.createElement('div');
@@ -235,7 +249,7 @@ class SkillsManager {
                 </div>
                 <p class="skill-card__description">${this.escapeHtml(skill.description)}</p>
                 <div class="skill-card__details">
-                    <button class="skill-card__delete-btn" data-skill-id="${skill.id}">Видалити навичку</button>
+                    <button class="skill-card__delete-btn" data-skill-id="${skill.id}">${deleteButtonText}</button>
                 </div>
             `;
 
@@ -264,4 +278,88 @@ class SkillsManager {
 }
 
 const skillsManager = new SkillsManager();
+window.skillsManager = skillsManager;
 console.log('✓ Система навичок завантажена успішно!');
+
+/* ===========================
+   Інтерактивність About-Секції
+   =========================== */
+
+const aboutImage = document.querySelector('.about__image');
+
+if (aboutImage) {
+    // Додаємо легкий блиск при наведенні
+    aboutImage.addEventListener('mousemove', (e) => {
+        const rect = aboutImage.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        // Динамічна тінь слідом за курсором
+        const rotateX = (y / rect.height - 0.5) * 10;
+        const rotateY = (x / rect.width - 0.5) * -10;
+
+        aboutImage.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    aboutImage.addEventListener('mouseleave', () => {
+        // Повертаємося до нормального стану
+        aboutImage.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+    });
+}
+
+console.log('✓ About-секція завантажена успішно!');
+
+/* ===========================
+   Переключення Мови (UA/EN)
+   =========================== */
+
+let currentLanguage = localStorage.getItem('currentLanguage') || 'uk';
+
+const langToggle = document.getElementById('langToggle');
+
+// Встановити мову при завантаженні
+if (currentLanguage === 'en') {
+    document.documentElement.lang = 'en';
+    updateLanguage('en');
+}
+
+langToggle.addEventListener('click', () => {
+    currentLanguage = currentLanguage === 'uk' ? 'en' : 'uk';
+    localStorage.setItem('currentLanguage', currentLanguage);
+    document.documentElement.lang = currentLanguage;
+    updateLanguage(currentLanguage);
+});
+
+function updateLanguage(lang) {
+    // Обновляємо title сторінки
+    const titleElement = document.querySelector('title');
+    if (titleElement && titleElement.hasAttribute('data-uk') && titleElement.hasAttribute('data-en')) {
+        document.title = lang === 'uk' ? titleElement.getAttribute('data-uk') : titleElement.getAttribute('data-en');
+    }
+
+    // Обновляємо текстові елементи
+    const elements = document.querySelectorAll('[data-uk][data-en]');
+    
+    elements.forEach(element => {
+        if (lang === 'uk') {
+            element.textContent = element.getAttribute('data-uk');
+        } else {
+            element.textContent = element.getAttribute('data-en');
+        }
+    });
+
+    // Обновляємо alt атрибути для зображень
+    const images = document.querySelectorAll('[data-uk-alt][data-en-alt]');
+    images.forEach(image => {
+        image.alt = lang === 'uk' ? image.getAttribute('data-uk-alt') : image.getAttribute('data-en-alt');
+    });
+
+    // Перерисовуємо карточки навичок з новою мовою
+    if (window.skillsManager) {
+        window.skillsManager.render();
+    }
+
+    console.log(`✓ Мова змінена на: ${lang === 'uk' ? 'Українська' : 'English'}`);
+}
+
+console.log('✓ Система переключення мови завантажена успішно!');
