@@ -1,6 +1,4 @@
-/* ===========================
-   Интерактивність Фону
-   =========================== */
+/* =========================== Интерактивність Фону =========================== */
 
 // Отримуємо елементи Загального Фону
 const gradientElement = document.getElementById('gradient');
@@ -14,9 +12,7 @@ let mouseY = 0;
 let smoothX = 0;
 let smoothY = 0;
 
-/* ===========================
-   Відслідкування Руху Курсора
-   =========================== */
+/* =========================== Відслідкування Руху Курсора =========================== */
 
 document.addEventListener('mousemove', (e) => {
     // Отримуємо позицію курсора відносно вікна
@@ -30,9 +26,7 @@ document.addEventListener('mouseleave', () => {
     mouseY = window.innerHeight / 2;
 });
 
-/* ===========================
-   Анімаційний Цикл
-   =========================== */
+/* =========================== Анімаційний Цикл =========================== */
 
 function animateFrame() {
     // Плавна інтерполяція (easing) для натурального руху
@@ -77,9 +71,7 @@ function animateFrame() {
 // Стартуємо анімаційний цикл
 animateFrame();
 
-/* ===========================
-   Взаємодія з Кнопкою
-   =========================== */
+/* =========================== Взаємодія з Кнопкою =========================== */
 
 const button = document.querySelector('.hero__button');
 
@@ -108,9 +100,7 @@ scrollButton.addEventListener('click', () => {
     skillsSection.scrollIntoView({ behavior: 'smooth' });
 });
 
-/* ===========================
-   Оптимізація для Мобільних
-   =========================== */
+/* =========================== Оптимізація для Мобільних =========================== */
 
 // Отримуємо ширину вікна для обчислень
 window.addEventListener('resize', () => {
@@ -138,9 +128,7 @@ if (window.matchMedia('(hover: none)').matches) {
 
 console.log('✓ Інтерактивна hero-секція завантажена успішно!');
 
-/* ===========================
-   Управління Навичками
-   =========================== */
+/* =========================== Управління Навичками =========================== */
 
 // Стандартні навички
 const DEFAULT_SKILLS = [
@@ -281,9 +269,172 @@ const skillsManager = new SkillsManager();
 window.skillsManager = skillsManager;
 console.log('✓ Система навичок завантажена успішно!');
 
-/* ===========================
-   Інтерактивність About-Секції
-   =========================== */
+/* =========================== Управління Проектами =========================== */
+
+const DEFAULT_PROJECTS = [
+    {
+        id: Date.now() + 100,
+        title: 'Portfolio Website',
+        description: 'Персональний веб-сайт портфоліо з інтерактивними секціями, адаптивним дизайном та темним режимом.',
+        image: 'https://via.placeholder.com/400x200?text=Portfolio+Website',
+        link: 'https://github.com'
+    },
+    {
+        id: Date.now() + 101,
+        title: 'Task Manager App',
+        description: 'Додаток для керування завданнями з localStorage, фільтрацією та сортуванням.',
+        image: 'https://via.placeholder.com/400x200?text=Task+Manager',
+        link: 'https://github.com'
+    },
+    {
+        id: Date.now() + 102,
+        title: 'Weather Dashboard',
+        description: 'Інтерактивна панель погоди з інтеграцією API, прогнозом та візуалізацією даних.',
+        image: 'https://via.placeholder.com/400x200?text=Weather+Dashboard',
+        link: 'https://github.com'
+    }
+];
+
+const PROJECTS_STORAGE_KEY = 'portfolioProjects';
+
+class ProjectsManager {
+    constructor() {
+        this.projectsGrid = document.getElementById('projectsGrid');
+        this.addProjectBtn = document.getElementById('addProjectBtn');
+        this.projects = this.loadProjects();
+        
+        this.addProjectBtn.addEventListener('click', () => this.addProject());
+        this.render();
+    }
+
+    loadProjects() {
+        const stored = localStorage.getItem(PROJECTS_STORAGE_KEY);
+        return stored ? JSON.parse(stored) : DEFAULT_PROJECTS;
+    }
+
+    saveProjects() {
+        localStorage.setItem(PROJECTS_STORAGE_KEY, JSON.stringify(this.projects));
+    }
+
+    addProject() {
+        const lang = localStorage.getItem('currentLanguage') || 'uk';
+        
+        const titlePrompt = lang === 'uk' 
+            ? 'Введіть назву проекту:' 
+            : 'Enter project name:';
+        const descriptionPrompt = lang === 'uk' 
+            ? 'Введіть опис проекту:' 
+            : 'Enter project description:';
+        const imagePrompt = lang === 'uk' 
+            ? 'Введіть URL зображення (або залиште порожним):' 
+            : 'Enter image URL (or leave empty):';
+        const linkPrompt = lang === 'uk' 
+            ? 'Введіть посилання на проект:' 
+            : 'Enter project link:';
+        const noDescriptionMsg = lang === 'uk' 
+            ? 'Опис невказано' 
+            : 'No description provided';
+
+        const title = prompt(titlePrompt);
+        if (!title || title.trim() === '') return;
+
+        const description = prompt(descriptionPrompt);
+        if (description === null) return;
+
+        const image = prompt(imagePrompt);
+        if (image === null) return;
+
+        const link = prompt(linkPrompt);
+        if (link === null) return;
+
+        const newProject = {
+            id: Date.now(),
+            title: title.trim(),
+            description: description.trim() || noDescriptionMsg,
+            image: image.trim() || 'https://via.placeholder.com/400x200?text=Project',
+            link: link.trim() || 'https://github.com'
+        };
+
+        this.projects.push(newProject);
+        this.saveProjects();
+        this.render();
+        console.log('✓ Проект додан:', newProject.title);
+    }
+
+    deleteProject(id) {
+        this.projects = this.projects.filter(project => project.id !== id);
+        this.saveProjects();
+        this.render();
+        console.log('✓ Проект видалений');
+    }
+
+    toggleProject(id) {
+        const card = document.querySelector(`[data-project-id="${id}"]`);
+        if (card) {
+            card.classList.toggle('expanded');
+        }
+    }
+
+    render() {
+        this.projectsGrid.innerHTML = '';
+        const lang = localStorage.getItem('currentLanguage') || 'uk';
+        const deleteButtonText = lang === 'uk' ? 'Видалити проект' : 'Delete project';
+        const viewProjectText = lang === 'uk' ? 'Переглянути проект' : 'View project';
+        
+        this.projects.forEach(project => {
+            const card = document.createElement('div');
+            card.className = 'project-card';
+            card.setAttribute('data-project-id', project.id);
+            
+            card.innerHTML = `
+                <img src="${this.escapeHtml(project.image)}" alt="${this.escapeHtml(project.title)}" class="project-card__image">
+                <div class="project-card__content">
+                    <div class="project-card__header">
+                        <h3 class="project-card__title">${this.escapeHtml(project.title)}</h3>
+                        <span class="project-card__toggle">▼</span>
+                    </div>
+                    <p class="project-card__description">${this.escapeHtml(project.description)}</p>
+                    <div class="project-card__details">
+                        <a href="${this.escapeHtmlAttribute(project.link)}" target="_blank" rel="noopener noreferrer" class="project-card__link">${viewProjectText}</a>
+                        <button class="project-card__delete-btn" data-project-id="${project.id}">${deleteButtonText}</button>
+                    </div>
+                </div>
+            `;
+
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('.project-card__delete-btn') || e.target.closest('.project-card__link')) return;
+                this.toggleProject(project.id);
+            });
+
+            const deleteBtn = card.querySelector('.project-card__delete-btn');
+            deleteBtn.addEventListener('click', () => this.deleteProject(project.id));
+
+            this.projectsGrid.appendChild(card);
+        });
+    }
+
+    escapeHtml(text) {
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        return text.replace(/[&<>"']/g, char => map[char]);
+    }
+
+    escapeHtmlAttribute(text) {
+        return text.replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    }
+}
+
+const projectsManager = new ProjectsManager();
+window.projectsManager = projectsManager;
+
+console.log('✓ Система проектів завантажена успішно!');
+
+/* =========================== Інтерактивність About-Секції =========================== */
 
 const aboutImage = document.querySelector('.about__image');
 
@@ -309,9 +460,7 @@ if (aboutImage) {
 
 console.log('✓ About-секція завантажена успішно!');
 
-/* ===========================
-   Переключення Мови (UA/EN)
-   =========================== */
+/* =========================== Переключення Мови (UA/EN) =========================== */
 
 let currentLanguage = localStorage.getItem('currentLanguage') || 'uk';
 
@@ -357,6 +506,11 @@ function updateLanguage(lang) {
     // Перерисовуємо карточки навичок з новою мовою
     if (window.skillsManager) {
         window.skillsManager.render();
+    }
+
+    // Перерисовуємо карточки проектів з новою мовою
+    if (window.projectsManager) {
+        window.projectsManager.render();
     }
 
     console.log(`✓ Мова змінена на: ${lang === 'uk' ? 'Українська' : 'English'}`);
